@@ -19,3 +19,9 @@
 ..\output\main.o: ..\CMSIS\stm32f10x.h
 ..\output\main.o: ..\FWlib\inc\stm32f10x_rcc.h
 ..\output\main.o: ..\FWlib\inc\misc.h
+..\output\main.o: ..\letter-shell-master\shell_port.h
+..\output\main.o: ..\letter-shell-master\shell.h
+..\output\main.o: ..\letter-shell-master\shell_cfg.h
+..\output\main.o: .\inc\usart.h
+..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\main.o: ..\FWlib\inc\stm32f10x_usart.h

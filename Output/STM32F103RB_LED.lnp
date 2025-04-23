@@ -3,6 +3,8 @@
 "..\output\led.o"
 "..\output\main.o"
 "..\output\stm32f10x_it.o"
+"..\output\usart.o"
+"..\output\stm32f10x_usart.o"
 "..\output\misc.o"
 "..\output\stm32f10x_rcc.o"
 "..\output\stm32f10x_gpio.o"
@@ -17,6 +19,10 @@
 "..\output\timers.o"
 "..\output\port.o"
 "..\output\heap_4.o"
+"..\output\shell.o"
+"..\output\shell_cmd_list.o"
+"..\output\shell_ext.o"
+"..\output\shell_port.o"
 --library_type=microlib --strict --scatter "..\Output\STM32F103RB_LED.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

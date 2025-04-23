@@ -24,7 +24,10 @@
 /* Includes ------------------------------------------------------------------*/
 
 #include "stm32f10x_it.h"
+#include "stm32f10x_usart.h"
 #include "led.h"
+#include "usart.h"
+#include "shell_port.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -162,17 +165,27 @@ void TIM2_IRQHandler(void)
   */
 void USART1_IRQHandler(void)
 {
-	#if 0
-	//uint8_t c;
-	if(USART_GetITStatus(USART1,USART_IT_RXNE))           /* 若开了接收中断，需要清中断标志位 */
-	{
-	  USART_ClearITPendingBit(USART1, USART_IT_RXNE);
-		//c=(uint8_t)USART_ReceiveData(USART1);	
-		//printf("%c",c);
-	}
-	#endif
+    uint8_t ch;  //接收中断缓冲       
+    if(USART_GetITStatus(USART1,USART_IT_RXNE) != RESET) 
+    {
+      ch = USART_ReceiveData(USART1);      //ch = USART1->DR;
+      //调用shell处理数据的接口 
+      shellHandler(&shell, ch); 
+      USART_ClearITPendingBit(USART1, USART_FLAG_RXNE); //清除接收中断标志位
+    }
 }
 
+// // 串口中断服务函数
+// void DEBUG_USART_IRQHandler(void)
+// {
+//   uint8_t ch;  //接收中断缓冲       
+//   if(USART_GetITStatus(USART1,USART_IT_RXNE) != RESET) 
+//   {
+//     ch = USART_ReceiveData(USART1);      //ch = USART1->DR;
+//     //调用shell处理数据的接口 
+//     shellHandler(&shell, ch); 
+//   }
+// }
 
 
 /**

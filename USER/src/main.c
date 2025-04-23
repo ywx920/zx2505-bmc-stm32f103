@@ -16,7 +16,9 @@
 #include "task.h"
 
 #include "led.h"
-
+#include "shell_port.h"
+#include "usart.h"
+#include "shell.h"
 
 
 
@@ -26,9 +28,9 @@ void LED1_Task(void *task)
 	while(1)
 	{
 		LED1(ON);
-		vTaskDelay(2000);
+		vTaskDelay(200);
 		LED1(OFF);
-		vTaskDelay(2000);
+		vTaskDelay(200);
 	}
 }
 
@@ -37,10 +39,13 @@ void LED2_Task(void *task)
 {
 	while(1)
 	{
-		LED2(ON);
+		// LED2(ON);
+		// vTaskDelay(1000);
+		// LED2(OFF);
 		vTaskDelay(1000);
-		LED2(OFF);
-		vTaskDelay(1000);
+		// LED1(OFF);
+		// printf("LED2 Task\r\n");
+		// vTaskDelay(200);
 	}
 }
 
@@ -56,7 +61,9 @@ int main(void)
 {	 
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
  	LED_GPIO_Config();	  						/* 运行LED初始化 */
-	
+	USART_Config();						/* 运行USART初始化 */
+	// Usart_SendString(DEBUG_USARTx, "Hello World!\r\n");	/* 运行USART发送字符串 */	
+	userShellInit();
 	xTaskCreate(LED1_Task,		//任务函数指针
 							"LED1_Task",		//任务名称
 							40,						//堆栈深度（字）
@@ -70,7 +77,6 @@ int main(void)
 							NULL,					//任务参数为空
 							1,						//任务优先级
 							NULL);				//任务句柄为空
-	
 							
 	vTaskStartScheduler();
 	while(1)

@@ -9,4 +9,10 @@
 ..\output\stm32f10x_it.o: ..\CMSIS\stm32f10x.h
 ..\output\stm32f10x_it.o: ..\FWlib\inc\stm32f10x_rcc.h
 ..\output\stm32f10x_it.o: ..\FWlib\inc\misc.h
+..\output\stm32f10x_it.o: ..\FWlib\inc\stm32f10x_usart.h
 ..\output\stm32f10x_it.o: .\inc\led.h
+..\output\stm32f10x_it.o: .\inc\usart.h
+..\output\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\stm32f10x_it.o: ..\letter-shell-master\shell_port.h
+..\output\stm32f10x_it.o: ..\letter-shell-master\shell.h
+..\output\stm32f10x_it.o: ..\letter-shell-master\shell_cfg.h

@@ -26,9 +26,9 @@
 #define 		OFF 		0
 
 
-#define RCC_LED1							RCC_APB2Periph_GPIOB
-#define GPIO_LED1_PORT				GPIOB
-#define GPIO_Pin_LED1					GPIO_Pin_12
+#define RCC_LED1							RCC_APB2Periph_GPIOC
+#define GPIO_LED1_PORT				GPIOC
+#define GPIO_Pin_LED1					GPIO_Pin_9
 
 #define RCC_LED2							RCC_APB2Periph_GPIOB
 #define GPIO_LED2_PORT				GPIOB
