@@ -25,3 +25,6 @@
 ..\output\main.o: .\inc\usart.h
 ..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\main.o: ..\FWlib\inc\stm32f10x_usart.h
+..\output\main.o: ..\lt2991\lt2991.h
+..\output\main.o: ..\FWlib\inc\stm32f10x_i2c.h
+..\output\main.o: ..\lt2991\soft_i2c.h

@@ -4,6 +4,9 @@
         "usart.h": "c",
         "stm32f10x.h": "c",
         "shell.h": "c",
-        "shell_cfg.h": "c"
+        "shell_cfg.h": "c",
+        "stm32f10x_i2c.h": "c",
+        "lt2991.h": "c",
+        "freertos.h": "c"
     }
 }

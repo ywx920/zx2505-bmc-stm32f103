@@ -1,0 +1,11 @@
+..\output\soft_i2c.o: ..\lt2991\soft_i2c.c
+..\output\soft_i2c.o: ..\lt2991\soft_i2c.h
+..\output\soft_i2c.o: ..\CMSIS\stm32f10x.h
+..\output\soft_i2c.o: ..\CMSIS\core_cm3.h
+..\output\soft_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\soft_i2c.o: ..\CMSIS\system_stm32f10x.h
+..\output\soft_i2c.o: .\inc\stm32f10x_conf.h
+..\output\soft_i2c.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\soft_i2c.o: ..\CMSIS\stm32f10x.h
+..\output\soft_i2c.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\soft_i2c.o: ..\FWlib\inc\misc.h
