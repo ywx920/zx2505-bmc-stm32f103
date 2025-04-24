@@ -5,7 +5,7 @@
 
 void delay_us(uint32_t us)
 {
-    for (int i = 0; i < us*10; i++)
+    for (int i = 0; i < us*100; i++)
     {
 
     }

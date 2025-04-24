@@ -64,15 +64,14 @@ void LED2_Task(void *task)
 			// 	printf("v%d : %.3f \r\n", i, lt2991_voltage_cache[i]);
 			// }
 		// printf("ID：%02x\r\n", LT2991_ReadChipID());
-        LT2991_ReadAllVoltages(voltages);
-        // float current = LT2991_CalcCurrent_V1V2();
+        // LT2991_ReadAllVoltages(voltages);
+        // // float current = LT2991_CalcCurrent_V1V2();
 
-        printf("V1: %.3f V\tV2: %.3f V\t \r\n", voltages[0], voltages[1]);
-        printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", voltages[2], voltages[3], voltages[4]);
-        printf("V7: %.3f V\tV8: %.3f V\r\n", voltages[5], voltages[6]);
-        printf("---------------\r\n");
-
-		// ZGW2991_PrintAll();
+        // printf("V1: %.3f V\tV2: %.3f V\t \r\n", voltages[0], voltages[1]);
+        // printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", voltages[2], voltages[3], voltages[4]);
+        // printf("V7: %.3f V\tV8: %.3f V\r\n", voltages[5], voltages[6]);
+        // printf("---------------\r\n");
+		LT2991_ReadAll();
         vTaskDelay(1000);  // 每秒更新一次
     }
 

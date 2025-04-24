@@ -26,4 +26,7 @@ extern float lt2991_voltage_cache[LT2991_CHANNEL_COUNT];  // 缓存所有通道�
 
 void ZGW2991_PrintAll(void);
 
+void LT2991_ReadAll();
+
+
 #endif
