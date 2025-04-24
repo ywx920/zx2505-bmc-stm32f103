@@ -67,10 +67,10 @@ uint16_t LT2991_ReadRaw(uint8_t reg)
 
     msb = I2C_ReadByte(0);
     lsb = I2C_ReadByte(1);
-    printf("msb: %02X lsb: %02X\r\n", msb, lsb);
+    // printf("msb: %02X lsb: %02X\r\n", msb, lsb);
     I2C_Stop();
 
-    return ((uint16_t)msb << 8) | lsb;
+    return ((((uint16_t)msb << 8) | lsb) & 0x3FFF); // 14位有效值
 }
 
 // float LT2991_ReadVoltage(uint8_t msb_reg, uint8_t lsb_reg)
@@ -171,10 +171,11 @@ void LT2991_Init(void)
     GPIO_Init(GPIOC, &GPIO_InitStructure);
     Soft_I2C_Init();
     printf("LT2991_Init\r\n");
-    LT2991_WriteReg(0x01, 0xF8); // 启用所有通道
-    LT2991_WriteReg(0x06, 0x01); // V1~V4：单端电压模式
-    LT2991_WriteReg(0x07, 0x00); // V5~V8：单端电压模式
-    LT2991_WriteReg(0x08, 0x10); // 启动重复采集（bit4=1）
+    LT2991_WriteReg(0x01, 0xFB); // 启用所有通道
+    LT2991_WriteReg(0x06, 0x09); // V1~V4：单端电压模式
+    LT2991_WriteReg(0x07, 0xA0); // V5~V8：单端电压模式
+    LT2991_WriteReg(0x08, 0x38); // 启动重复采集（bit4=1）
+    LT2991_WriteReg(0x09, 0x10); // 启动重复采集（bit4=1）
     delay_us(1000); // 等待稳定
 }
 
@@ -182,7 +183,7 @@ float LT2991_ReadCurrent_V1V2(void)
 {
     float v1 = LT2991_ReadVoltage(0x0A); // V1
     float v2 = LT2991_ReadVoltage(0x0C); // V2
-    // printf("V1: %.3f V\tV2: %.3f V\r\n", v1, v2);
+    printf("V1: %.3f V\tV2: %.3f V\r\n", v1, v2);
     if (v1 > v2)
     {
         return (v1 - v2) / 0.01f;  // 电流单位 A，假设采样电阻为 0.01Ω
@@ -191,24 +192,61 @@ float LT2991_ReadCurrent_V1V2(void)
     {
         return (v2 - v1) / 0.01f;  // 电流单位 A，假设采样电阻为 0.01Ω
     }
+
+    LT2991_WriteReg(0x06, 0x01); // V1~V2：差分电压模式
+    delay_us(3000); // 等待稳定
+
+
+	// uint8_t sign = 0;
+	// uint8_t data[1]={0};
+	// uint8_t data1[1]={0};
+	// uint16_t tem=0;
+	// float vol_d=0.0;
+	// uint8_t data2[1]={0};
+
+    // data[0] = I2C_ReadReg(0x0C);
+    // data1[0] = I2C_ReadReg(0x0D);
+    // printf("data[0]: %02X data1[0]: %02X\r\n", data[0], data1[0]);
+    // data2[0]=I2C_ReadReg(0x01);
+    // printf("data2[0]: %02X\r\n", data2[0]);
+	// tem=((data[0]&0xffff)<<8)|data1[0];
+	// if(tem & 0x4000)
+	// {
+	// 	tem=tem^0x3fff+1;
+	// 	sign = 1;
+	// }
+	// else
+	// {
+	// }
+	// tem=tem&0x3fff;
+	// vol_d=((float)tem * 19.075)/1000;
+	// if(sign==1)
+	// {
+	// 	vol_d=(float)(0.0)-vol_d;
+	// }
+	// printf("Current: %.3f mV\r\n",vol_d);
+
+
     
 }
 
 void LT2991_Read_V3V4V5(float *v3, float *v4, float *v5)
 {
-    *v3 = LT2991_ReadVoltage(0x0E);  // V3
+    *v3 = LT2991_ReadVoltage(0x0E) * 2;  // V3
     delay_us(1000); // 延时，避免连续读干扰
-    *v4 = LT2991_ReadVoltage(0x10);  // V4
+    *v4 = LT2991_ReadVoltage(0x10) * 4 / 3;  // V4
     delay_us(1000); // 延时，避免连续读干扰
     *v5 = LT2991_ReadVoltage(0x12);  // V5
 }
 
 float LT2991_ReadTemperature(uint8_t reg)
 {
-    uint16_t raw = LT2991_ReadRaw(reg);
+    uint16_t raw = I2C_ReadReg(reg);
     // printf("reg: %02X \t raw: %04X\r\n", reg, raw);
     // printf("raw: %d\r\n", raw);
-    return (raw * 0.0625f);  // 按照 LT2991 手册温度转换
+    // return (raw * 0.0625f);  // 按照 LT2991 手册温度转换
+    raw  = raw&0x1fff;
+    return ((float)raw * 0.0625f);  // 按照 LT2991 手册温度转换
 }
 
 void LT2991_Read_Temperatures(float *temp7, float *temp8)
@@ -222,30 +260,28 @@ void LT2991_ReadAll()
 {
     float v3, v4, v5;
     float temp7, temp8;
-    // float current = LT2991_ReadCurrent_V1V2();
-    // LT2991_Read_V3V4V5(&v3, &v4, &v5);
-    // LT2991_Read_Temperatures(&temp7, &temp8);
-    // printf("v11111111111111111111111\r\n");
-    // LT2991_ReadVoltage(0x0A);
-    // printf("v22222222222222222222222\r\n");
-    // LT2991_ReadVoltage(0x0C);
+    float current = LT2991_ReadCurrent_V1V2();
+    delay_us(2000); // 延时，避免连续读干扰
+    LT2991_Read_V3V4V5(&v3, &v4, &v5);
+    LT2991_Read_Temperatures(&temp7, &temp8);
 
-    ZGW2991_ReadVoltage(0x0A, 0x0B);
-    ZGW2991_ReadVoltage(0x0C, 0x0D);
-float tmp;
-    tmp = ZGW2991_ReadVoltage(0x0E, 0x0F);
-    printf("V3: %.3f V\r\n", tmp);
-    tmp = ZGW2991_ReadVoltage(0x10, 0x11);
-    printf("V4: %.3f V\r\n", tmp);
-    tmp = ZGW2991_ReadVoltage(0x12, 0x13);
-    printf("V5: %.3f V\r\n", tmp);
-    ZGW2991_ReadVoltage(0x16, 0x17);
+
+//     ZGW2991_ReadVoltage(0x0A, 0x0B);
+//     ZGW2991_ReadVoltage(0x0C, 0x0D);
+// float tmp;
+//     tmp = ZGW2991_ReadVoltage(0x0E, 0x0F);
+//     printf("V3: %.3f V\r\n", tmp);
+//     tmp = ZGW2991_ReadVoltage(0x10, 0x11);
+//     printf("V4: %.3f V\r\n", tmp);
+//     tmp = ZGW2991_ReadVoltage(0x12, 0x13);
+//     printf("V5: %.3f V\r\n", tmp);
+//     ZGW2991_ReadVoltage(0x16, 0x17);
 
 
 
     // printf("%x\r\n", LT2991_ReadVoltage(0x0C));
     // printf("V1-V2 Current: %.3f A\r\n", current);
-    // printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", v3, v4, v5);
-    // printf("Temp7: %.2f \tTemp8: %.2f \r\n", temp7, temp8);
+    printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", v3, v4, v5);
+    printf("Temp7: %.2f \tTemp8: %.2f \r\n", temp7, temp8);
 }
 

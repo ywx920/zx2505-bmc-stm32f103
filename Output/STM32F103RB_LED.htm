@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\Output\STM32F103RB_LED.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\Output\STM32F103RB_LED.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Apr 24 17:46:22 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Apr 24 19:38:22 2025
 <BR><P>
 <H3>Maximum Stack Usage =        228 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -338,7 +338,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.text)
 </UL>
 <P><STRONG><a name="[56]"></a>LED2_Task</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LED2_Task &rArr; LT2991_ReadAll &rArr; ZGW2991_ReadVoltage &rArr; I2C_ReadReg &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = LED2_Task &rArr; LT2991_ReadAll &rArr; LT2991_ReadCurrent_V1V2 &rArr; LT2991_ReadVoltage &rArr; LT2991_ReadRaw &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
@@ -1621,7 +1621,8 @@ Global Symbols
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_SendByte
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadByte
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadCurrent
+<BR>[Called By]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
+<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadCurrent
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadVoltage
 </UL>
 
@@ -1635,28 +1636,25 @@ Global Symbols
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Init
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 </UL>
 
-<P><STRONG><a name="[f2]"></a>LT2991_ReadRaw</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, lt2991.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitACK
+<P><STRONG><a name="[f2]"></a>LT2991_ReadRaw</STRONG> (Thumb, 72 bytes, Stack size 16 bytes, lt2991.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = LT2991_ReadRaw &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitACK
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Stop
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Start
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_SendByte
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadByte
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
-<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage
+<BR>[Called By]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage
 </UL>
 
-<P><STRONG><a name="[f3]"></a>ZGW2991_ReadVoltage</STRONG> (Thumb, 50 bytes, Stack size 32 bytes, lt2991.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = ZGW2991_ReadVoltage &rArr; I2C_ReadReg &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
-</UL>
-<BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadReg
+<P><STRONG><a name="[f3]"></a>ZGW2991_ReadVoltage</STRONG> (Thumb, 50 bytes, Stack size 32 bytes, lt2991.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadReg
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-</UL>
-<BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
 </UL>
 
 <P><STRONG><a name="[f4]"></a>ZGW2991_ReadCurrent</STRONG> (Thumb, 82 bytes, Stack size 40 bytes, lt2991.o(.text), UNUSED)
@@ -1666,12 +1664,14 @@ Global Symbols
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 </UL>
 
-<P><STRONG><a name="[f5]"></a>LT2991_ReadVoltage</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, lt2991.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadRaw
+<P><STRONG><a name="[f5]"></a>LT2991_ReadVoltage</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, lt2991.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = LT2991_ReadVoltage &rArr; LT2991_ReadRaw &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadRaw
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_V3V4V5
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_V3V4V5
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_CalcCurrent_V1V2
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage_Avg
@@ -1697,7 +1697,7 @@ Global Symbols
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 </UL>
 
-<P><STRONG><a name="[5b]"></a>LT2991_Init</STRONG> (Thumb, 88 bytes, Stack size 8 bytes, lt2991.o(.text))
+<P><STRONG><a name="[5b]"></a>LT2991_Init</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, lt2991.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = LT2991_Init &rArr; LT2991_WriteReg &rArr; I2C_WaitACK &rArr; I2C_Stop &rArr; SDA_OUT &rArr; GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
@@ -1710,50 +1710,75 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[fd]"></a>LT2991_ReadCurrent_V1V2</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, lt2991.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfcmple
+<P><STRONG><a name="[fd]"></a>LT2991_ReadCurrent_V1V2</STRONG> (Thumb, 130 bytes, Stack size 40 bytes, lt2991.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = LT2991_ReadCurrent_V1V2 &rArr; LT2991_ReadVoltage &rArr; LT2991_ReadRaw &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfcmple
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage
+<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_WriteReg
+<LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
+<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+</UL>
+<BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
+</UL>
+
+<P><STRONG><a name="[101]"></a>LT2991_Read_V3V4V5</STRONG> (Thumb, 82 bytes, Stack size 24 bytes, lt2991.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = LT2991_Read_V3V4V5 &rArr; LT2991_ReadVoltage &rArr; LT2991_ReadRaw &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
+<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 </UL>
-
-<P><STRONG><a name="[100]"></a>LT2991_Read_V3V4V5</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, lt2991.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
-<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage
+<BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
 </UL>
 
-<P><STRONG><a name="[101]"></a>LT2991_ReadTemperature</STRONG> (Thumb, 30 bytes, Stack size 16 bytes, lt2991.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadRaw
+<P><STRONG><a name="[102]"></a>LT2991_ReadTemperature</STRONG> (Thumb, 32 bytes, Stack size 16 bytes, lt2991.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = LT2991_ReadTemperature &rArr; I2C_ReadReg &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadReg
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_Temperatures
+<BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_Temperatures
 </UL>
 
-<P><STRONG><a name="[102]"></a>LT2991_Read_Temperatures</STRONG> (Thumb, 24 bytes, Stack size 16 bytes, lt2991.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
+<P><STRONG><a name="[103]"></a>LT2991_Read_Temperatures</STRONG> (Thumb, 24 bytes, Stack size 16 bytes, lt2991.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = LT2991_Read_Temperatures &rArr; LT2991_ReadTemperature &rArr; I2C_ReadReg &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
+</UL>
+<BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
 </UL>
 
-<P><STRONG><a name="[57]"></a>LT2991_ReadAll</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, lt2991.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LT2991_ReadAll &rArr; ZGW2991_ReadVoltage &rArr; I2C_ReadReg &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
+<P><STRONG><a name="[57]"></a>LT2991_ReadAll</STRONG> (Thumb, 122 bytes, Stack size 72 bytes, lt2991.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = LT2991_ReadAll &rArr; LT2991_ReadCurrent_V1V2 &rArr; LT2991_ReadVoltage &rArr; LT2991_ReadRaw &rArr; I2C_ReadByte &rArr; I2C_SendACK &rArr; SDA_OUT &rArr; GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadVoltage
+<BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_Temperatures
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_V3V4V5
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED2_Task
 </UL>
 
 <P><STRONG><a name="[fc]"></a>delay_us</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, soft_i2c.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Init
+<BR><BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Init
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_SendACK
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitACK
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Stop
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Start
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_SendByte
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_ReadByte
-<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_V3V4V5
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_V3V4V5
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 </UL>
 
 <P><STRONG><a name="[fb]"></a>Soft_I2C_Init</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, soft_i2c.o(.text))
@@ -1890,8 +1915,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shellSeekCommand
 </UL>
 
-<P><STRONG><a name="[f7]"></a>__aeabi_fadd</STRONG> (Thumb, 164 bytes, Stack size 16 bytes, fadd.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_round
+<P><STRONG><a name="[f7]"></a>__aeabi_fadd</STRONG> (Thumb, 164 bytes, Stack size 16 bytes, fadd.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = __aeabi_fadd &rArr; _float_epilogue
+</UL>
+<BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_round
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_epilogue
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
@@ -1899,8 +1926,10 @@ Global Symbols
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_frsub
 </UL>
 
-<P><STRONG><a name="[fa]"></a>__aeabi_fsub</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, fadd.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
+<P><STRONG><a name="[fa]"></a>__aeabi_fsub</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, fadd.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
+</UL>
+<BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_CalcCurrent_V1V2
@@ -1913,7 +1942,8 @@ Global Symbols
 <P><STRONG><a name="[e5]"></a>__aeabi_fmul</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, fmul.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_fmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
+<BR>[Called By]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_V3V4V5
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadCurrent
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadVoltage
@@ -1925,7 +1955,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_round
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Read_V3V4V5
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_CalcCurrent_V1V2
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage_Avg
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadCurrent
@@ -1946,24 +1977,25 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
+<BR>[Called By]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadTemperature
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage_Avg
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadVoltage
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZGW2991_ReadVoltage
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shellExtParseNumber
 </UL>
 
-<P><STRONG><a name="[103]"></a>__aeabi_f2d</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, f2d.o(.text))
+<P><STRONG><a name="[fe]"></a>__aeabi_f2d</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, f2d.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 </UL>
 
 <P><STRONG><a name="[173]"></a>__aeabi_cfcmpeq</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, cfcmple.o(.text), UNUSED)
 
-<P><STRONG><a name="[ff]"></a>__aeabi_cfcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfcmple.o(.text), UNUSED)
+<P><STRONG><a name="[100]"></a>__aeabi_cfcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfcmple.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 </UL>
 
-<P><STRONG><a name="[fe]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfrcmple.o(.text), UNUSED)
+<P><STRONG><a name="[ff]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfrcmple.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 </UL>
 
@@ -2095,7 +2127,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadAll
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_Init
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadRaw
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_ReadCurrent_V1V2
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LT2991_WriteReg
 </UL>
 
