@@ -21,3 +21,4 @@
 ..\output\lt2991.o: ..\FreeRTOS\include\mpu_wrappers.h
 ..\output\lt2991.o: ..\FreeRTOS\include\task.h
 ..\output\lt2991.o: ..\FreeRTOS\include\list.h
+..\output\lt2991.o: .\inc\main.h

@@ -9,3 +9,14 @@
 ..\output\soft_i2c.o: ..\CMSIS\stm32f10x.h
 ..\output\soft_i2c.o: ..\FWlib\inc\stm32f10x_rcc.h
 ..\output\soft_i2c.o: ..\FWlib\inc\misc.h
+..\output\soft_i2c.o: ..\FreeRTOS\include\FreeRTOS.h
+..\output\soft_i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\output\soft_i2c.o: ..\FreeRTOS\FreeRTOSConfig.h
+..\output\soft_i2c.o: ..\FreeRTOS\include\projdefs.h
+..\output\soft_i2c.o: ..\FreeRTOS\include\portable.h
+..\output\soft_i2c.o: ..\FreeRTOS\include\deprecated_definitions.h
+..\output\soft_i2c.o: ..\FreeRTOS\portable\portmacro.h
+..\output\soft_i2c.o: ..\FreeRTOS\include\mpu_wrappers.h
+..\output\soft_i2c.o: ..\FreeRTOS\include\task.h
+..\output\soft_i2c.o: ..\FreeRTOS\include\list.h
+..\output\soft_i2c.o: .\inc\main.h

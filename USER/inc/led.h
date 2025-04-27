@@ -30,9 +30,9 @@
 #define GPIO_LED1_PORT				GPIOC
 #define GPIO_Pin_LED1					GPIO_Pin_9
 
-#define RCC_LED2							RCC_APB2Periph_GPIOB
-#define GPIO_LED2_PORT				GPIOB
-#define GPIO_Pin_LED2					GPIO_Pin_13
+#define RCC_LED2							RCC_APB2Periph_GPIOA
+#define GPIO_LED2_PORT				GPIOA
+#define GPIO_Pin_LED2					GPIO_Pin_7
 
 
 #define LED1(a)	if (a)	\

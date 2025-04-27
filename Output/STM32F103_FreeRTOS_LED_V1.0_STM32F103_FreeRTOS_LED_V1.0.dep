@@ -1,7 +1,7 @@
 Dependencies for Project 'STM32F103_FreeRTOS_LED_V1.0', Target 'STM32F103_FreeRTOS_LED_V1.0': (DO NOT MODIFY !)
 F (..\CMSIS\startup\startup_stm32f10x_md.s)(0x55347AAB)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include--pd "__UVISION_VERSION SETA 514" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"--list ..\listing\startup_stm32f10x_md.lst --xref -o ..\output\startup_stm32f10x_md.o --depend ..\output\startup_stm32f10x_md.d)
-F (.\src\led.c)(0x58D4F43C)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\led.o --omf_browse ..\output\led.crf --depend ..\output\led.d)
-I (.\inc\led.h)(0x68089CCD)
+F (.\src\led.c)(0x680B46C2)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\led.o --omf_browse ..\output\led.crf --depend ..\output\led.d)
+I (.\inc\led.h)(0x680B46E4)
 I (..\CMSIS\stm32f10x.h)(0x56C53203)
 I (..\CMSIS\core_cm3.h)(0x55347AAB)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -10,7 +10,7 @@ I (.\inc\stm32f10x_conf.h)(0x58D262C9)
 I (..\FWlib\inc\stm32f10x_gpio.h)(0x55347AAB)
 I (..\FWlib\inc\stm32f10x_rcc.h)(0x55347AAB)
 I (..\FWlib\inc\misc.h)(0x55347AAB)
-F (.\src\main.c)(0x6809F1E5)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
+F (.\src\main.c)(0x680B47D3)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
 I (..\FreeRTOS\include\FreeRTOS.h)(0x5620F7DA)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x6025237E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -22,7 +22,7 @@ I (..\FreeRTOS\portable\portmacro.h)(0x5620F7DB)
 I (..\FreeRTOS\include\mpu_wrappers.h)(0x5620F7DA)
 I (..\FreeRTOS\include\task.h)(0x56228176)
 I (..\FreeRTOS\include\list.h)(0x5620F7DA)
-I (.\inc\led.h)(0x68089CCD)
+I (.\inc\led.h)(0x680B46E4)
 I (..\CMSIS\stm32f10x.h)(0x56C53203)
 I (..\CMSIS\core_cm3.h)(0x55347AAB)
 I (..\CMSIS\system_stm32f10x.h)(0x55347AAB)
@@ -36,9 +36,10 @@ I (..\letter-shell-master\shell_cfg.h)(0x66AA43C6)
 I (.\inc\usart.h)(0x6809A5BD)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\FWlib\inc\stm32f10x_usart.h)(0x55347AAB)
-I (..\lt2991\lt2991.h)(0x6809F19E)
+I (..\lt2991\lt2991.h)(0x680DE41C)
 I (..\FWlib\inc\stm32f10x_i2c.h)(0x55347AAB)
-I (..\lt2991\soft_i2c.h)(0x6809DFBC)
+I (..\lt2991\soft_i2c.h)(0x680DE662)
+I (.\inc\main.h)(0x680B2E32)
 F (.\src\stm32f10x_it.c)(0x6809A5C0)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\stm32f10x_it.o --omf_browse ..\output\stm32f10x_it.crf --depend ..\output\stm32f10x_it.d)
 I (.\inc\stm32f10x_it.h)(0x55347AAB)
 I (..\CMSIS\stm32f10x.h)(0x56C53203)
@@ -50,7 +51,7 @@ I (..\FWlib\inc\stm32f10x_gpio.h)(0x55347AAB)
 I (..\FWlib\inc\stm32f10x_rcc.h)(0x55347AAB)
 I (..\FWlib\inc\misc.h)(0x55347AAB)
 I (..\FWlib\inc\stm32f10x_usart.h)(0x55347AAB)
-I (.\inc\led.h)(0x68089CCD)
+I (.\inc\led.h)(0x680B46E4)
 I (.\inc\usart.h)(0x6809A5BD)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\letter-shell-master\shell_port.h)(0x68088263)
@@ -470,8 +471,8 @@ I (..\FWlib\inc\misc.h)(0x55347AAB)
 I (.\inc\usart.h)(0x6809A5BD)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\FWlib\inc\stm32f10x_usart.h)(0x55347AAB)
-F (..\lt2991\lt2991.c)(0x680A22AC)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\lt2991.o --omf_browse ..\output\lt2991.crf --depend ..\output\lt2991.d)
-I (..\lt2991\lt2991.h)(0x6809F19E)
+F (..\lt2991\lt2991.c)(0x680DF2B8)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\lt2991.o --omf_browse ..\output\lt2991.crf --depend ..\output\lt2991.d)
+I (..\lt2991\lt2991.h)(0x680DE41C)
 I (..\CMSIS\stm32f10x.h)(0x56C53203)
 I (..\CMSIS\core_cm3.h)(0x55347AAB)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -481,7 +482,7 @@ I (..\FWlib\inc\stm32f10x_gpio.h)(0x55347AAB)
 I (..\FWlib\inc\stm32f10x_rcc.h)(0x55347AAB)
 I (..\FWlib\inc\misc.h)(0x55347AAB)
 I (..\FWlib\inc\stm32f10x_i2c.h)(0x55347AAB)
-I (..\lt2991\soft_i2c.h)(0x6809DFBC)
+I (..\lt2991\soft_i2c.h)(0x680DE662)
 I (..\FreeRTOS\include\FreeRTOS.h)(0x5620F7DA)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x6025237E)
 I (..\FreeRTOS\FreeRTOSConfig.h)(0x58D25CB0)
@@ -492,8 +493,9 @@ I (..\FreeRTOS\portable\portmacro.h)(0x5620F7DB)
 I (..\FreeRTOS\include\mpu_wrappers.h)(0x5620F7DA)
 I (..\FreeRTOS\include\task.h)(0x56228176)
 I (..\FreeRTOS\include\list.h)(0x5620F7DA)
-F (..\lt2991\soft_i2c.c)(0x6809FA24)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\soft_i2c.o --omf_browse ..\output\soft_i2c.crf --depend ..\output\soft_i2c.d)
-I (..\lt2991\soft_i2c.h)(0x6809DFBC)
+I (.\inc\main.h)(0x680B2E32)
+F (..\lt2991\soft_i2c.c)(0x680DEB04)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\USER -I..\FWlib\inc -I..\FWlib\src -I.\inc -I..\FreeRTOS\include -I..\FreeRTOS -I..\FreeRTOS\portable -I..\letter-shell-master -I..\lt2991-I E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\RTE-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD-o ..\output\soft_i2c.o --omf_browse ..\output\soft_i2c.crf --depend ..\output\soft_i2c.d)
+I (..\lt2991\soft_i2c.h)(0x680DE662)
 I (..\CMSIS\stm32f10x.h)(0x56C53203)
 I (..\CMSIS\core_cm3.h)(0x55347AAB)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -502,3 +504,14 @@ I (.\inc\stm32f10x_conf.h)(0x58D262C9)
 I (..\FWlib\inc\stm32f10x_gpio.h)(0x55347AAB)
 I (..\FWlib\inc\stm32f10x_rcc.h)(0x55347AAB)
 I (..\FWlib\inc\misc.h)(0x55347AAB)
+I (..\FreeRTOS\include\FreeRTOS.h)(0x5620F7DA)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x6025237E)
+I (..\FreeRTOS\FreeRTOSConfig.h)(0x58D25CB0)
+I (..\FreeRTOS\include\projdefs.h)(0x5620F7DA)
+I (..\FreeRTOS\include\portable.h)(0x5620F7DA)
+I (..\FreeRTOS\include\deprecated_definitions.h)(0x5620F7DA)
+I (..\FreeRTOS\portable\portmacro.h)(0x5620F7DB)
+I (..\FreeRTOS\include\mpu_wrappers.h)(0x5620F7DA)
+I (..\FreeRTOS\include\task.h)(0x56228176)
+I (..\FreeRTOS\include\list.h)(0x5620F7DA)
+I (.\inc\main.h)(0x680B2E32)

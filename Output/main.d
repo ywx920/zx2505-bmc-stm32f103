@@ -28,3 +28,4 @@
 ..\output\main.o: ..\lt2991\lt2991.h
 ..\output\main.o: ..\FWlib\inc\stm32f10x_i2c.h
 ..\output\main.o: ..\lt2991\soft_i2c.h
+..\output\main.o: .\inc\main.h

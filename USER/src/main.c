@@ -22,6 +22,37 @@
 #include "lt2991.h"
 float voltages[7];  // V1~V5, V7, V8
 
+
+// static uint8_t  fac_us = 0;
+
+// void delay_init(void)
+// {
+//     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8); // SysTick使用HCLK/8
+//     fac_us = SystemCoreClock / 8000000; // 72MHz / 8 = 9
+// }
+
+// void delay_us(uint32_t us)
+// {
+//     uint32_t temp;
+//     SysTick->LOAD = us * fac_us;           // 设置重装载值
+//     SysTick->VAL = 0x00;                   // 清空计数器
+//     SysTick->CTRL = SysTick_CTRL_ENABLE_Msk; // 启动定时器
+
+//     do {
+//         temp = SysTick->CTRL;
+//     } while ((temp & SysTick_CTRL_ENABLE_Msk) && !(temp & SysTick_CTRL_COUNTFLAG_Msk));
+
+//     SysTick->CTRL = 0;  // 关闭计时器
+//     SysTick->VAL = 0;   // 清空计数器
+// }
+
+// void delay_ms(uint32_t ms)
+// {
+//     while (ms--)
+//         delay_us(1000);
+// }
+
+
 /* FreeRTOS task1 */
 void LED1_Task(void *task)
 {
@@ -38,60 +69,17 @@ void LED1_Task(void *task)
 /* FreeRTOS task2 */
 void LED2_Task(void *task)
 {
-
-	// while(1)
-	// {
-	// // 	// LED2(ON);
-	// // 	// vTaskDelay(1000);
-	// // 	// LED2(OFF);
-	// // 	vTaskDelay(1000);
-	// // 	// LED1(OFF);
-	// 	// printf("LED2 Task\r\n");
-	// 	vTaskDelay(200);
-	// }
-
-
     while (1)
     {
-        // for (uint8_t i = 0; i < LT2991_CHANNEL_COUNT; i++)
-        // {
-        //     lt2991_voltage_cache[i] = LT2991_ReadVoltage(i);
-			
-        // }
-		// printf("[LT2991] 电压：\r\n");
-		// for (int i = 0; i < LT2991_CHANNEL_COUNT; i++)
-		// {
-			// 	printf("v%d : %.3f \r\n", i, lt2991_voltage_cache[i]);
-			// }
-		// printf("ID：%02x\r\n", LT2991_ReadChipID());
-        // LT2991_ReadAllVoltages(voltages);
-        // // float current = LT2991_CalcCurrent_V1V2();
-
-        // printf("V1: %.3f V\tV2: %.3f V\t \r\n", voltages[0], voltages[1]);
-        // printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", voltages[2], voltages[3], voltages[4]);
-        // printf("V7: %.3f V\tV8: %.3f V\r\n", voltages[5], voltages[6]);
-        // printf("---------------\r\n");
+		// LED2(ON);
+		// delay_us(1);
+		// LED2(OFF);
+		// delay_us(1);
 		LT2991_ReadAll();
-        vTaskDelay(1000);  // 每秒更新一次
+        vTaskDelay(2000);  // 每秒更新一次
     }
 
 }
-
-
-// void LT2991_Task(void *task)
-// {
-//     LT2991_Init();
-
-//     while (1)
-//     {
-//         for (uint8_t i = 0; i < LT2991_CHANNEL_COUNT; i++)
-//         {
-//             lt2991_voltage_cache[i] = LT2991_ReadVoltage(i);
-//         }
-
-//         vTaskDelay(pdMS_TO_TICKS(1000));  // 每秒更新一次
-//     }
-// }
 
 
 /* 
@@ -132,24 +120,7 @@ int main(void)
 	vTaskStartScheduler();
 	while(1)
 	{ 
-		
+
 	}
 }
-/******************* (C) COPYRIGHT 2017 *****END OF FILE************/
 
-
-// void vApplicationIdleHook(void)
-// {
-//     static TickType_t lastPrintTick = 0;
-
-//     if ((xTaskGetTickCount() - lastPrintTick) > pdMS_TO_TICKS(1000))
-//     {
-//         lastPrintTick = xTaskGetTickCount();
-//         printf("[LT2991] 电压：");
-//         for (int i = 0; i < LT2991_CHANNEL_COUNT; i++)
-//         {
-//             printf("%.3f ", lt2991_voltage_cache[i]);
-//         }
-//         printf("V\r\n");
-//     }
-// }

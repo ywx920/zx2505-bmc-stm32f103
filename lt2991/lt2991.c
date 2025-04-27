@@ -3,228 +3,81 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-
-
-#define LT2991_ADDR    0x98
-
-float lt2991_voltage_cache[LT2991_CHANNEL_COUNT] = {0};
-
-
-uint8_t I2C_ReadReg(uint8_t reg)
-{
-    uint8_t val = 0;
-
-    I2C_Start();
-    I2C_SendByte(LT2991_ADDR);
-    I2C_WaitACK();
-
-    I2C_SendByte(reg);
-    I2C_WaitACK();
-
-    I2C_Start();
-    I2C_SendByte(LT2991_ADDR | 0x01);
-    I2C_WaitACK();
-
-    val = I2C_ReadByte(0);
-    I2C_Stop();
-
-    return val;
-}
-
-
-void LT2991_WriteReg(uint8_t reg, uint8_t val)
-{
-    I2C_Start();
-    I2C_SendByte(LT2991_ADDR);
-    I2C_WaitACK();
-
-    I2C_SendByte(reg);
-    I2C_WaitACK();
-
-    I2C_SendByte(val);
-    // I2C_WaitACK();
-    if (I2C_WaitACK() == 0)
-        printf("LT2991 ACK success\r\n");
-    else
-        printf("LT2991 ACK failed\r\n");
-    I2C_Stop();
-}
-
-uint16_t LT2991_ReadRaw(uint8_t reg)
-{
-    uint8_t msb, lsb;
-
-    I2C_Start();
-    I2C_SendByte(LT2991_ADDR);
-    I2C_WaitACK();
-
-    I2C_SendByte(reg);
-    I2C_WaitACK();
-
-    I2C_Start();
-    I2C_SendByte((LT2991_ADDR) | 0x01);
-    I2C_WaitACK();
-
-    msb = I2C_ReadByte(0);
-    lsb = I2C_ReadByte(1);
-    // printf("msb: %02X lsb: %02X\r\n", msb, lsb);
-    I2C_Stop();
-
-    return ((((uint16_t)msb << 8) | lsb) & 0x3FFF); // 14‰ΩçÊúâÊïàÂÄº
-}
-
-// float LT2991_ReadVoltage(uint8_t msb_reg, uint8_t lsb_reg)
-// {
-//     uint16_t raw = (LT2991_ReadReg(msb_reg) << 8) | LT2991_ReadReg(lsb_reg);
-//     raw >>= 4;  // ÂèñÈ´ò12‰Ωç
-//     float voltage = raw * 0.00030518f; // Âçï‰Ωç‰∏∫ V
-//     return voltage;
-// }
-float ZGW2991_ReadVoltage(uint8_t reg_msb, uint8_t reg_lsb)
-{
-    uint8_t msb = I2C_ReadReg(reg_msb);
-    uint8_t lsb = I2C_ReadReg(reg_lsb);
-
-    uint16_t raw = ((msb & 0x3F) << 8) | lsb; // 14‰ΩçÊúâÊïàÂÄº
-    return raw * 0.00030518f;
-}
-
-float ZGW2991_ReadCurrent(uint8_t reg_msb, uint8_t reg_lsb, float r_sense)
-{
-    uint8_t msb = I2C_ReadReg(reg_msb);
-    uint8_t lsb = I2C_ReadReg(reg_lsb);
-
-    int16_t raw = ((msb & 0x3F) << 8) | lsb;
-    if (msb & 0x40) raw = -(~raw + 1);  // Ë°•Á†ÅÁ¨¶Âè∑Êâ©Â±ï
-
-    return (raw * 19.075f / 1e6f) / r_sense;
-}
-
-
-// ËØªÂèñÊåáÂÆöÈÄöÈÅìÁîµÂéãÔºåÂçï‰ΩçV
+// ∂¡»°÷∏∂®Õ®µ¿µÁ—π£¨µ•ŒªV
 float LT2991_ReadVoltage(uint8_t reg)
 {
-    uint16_t val = LT2991_ReadRaw(reg);
-    // return (val * 2.5f) / 4096.0f;
+    uint8_t data = 0;
+    uint8_t data1 = 0;
+    uint16_t tem = 0;
+    float voltage = 0.0;
 
-    return (val * 0.00030518f); // Âçï‰Ωç V
+    data = I2C_ReadByte(reg, XZC2991Adr, 1);
+    data1 = I2C_ReadByte(reg + 1, XZC2991Adr, 1);
+
+    tem = ((data & 0x00ff) << 8) | data1;
+    tem = tem & 0x3fff;
+    voltage = ((float)tem * Vol_SINGLE_LSB) / 1000;
+    return voltage/1000; // µ•Œª V
 }
 
-float LT2991_ReadVoltage_Avg(uint8_t reg, uint8_t sample_count)
-{
-    float sum = 0.0f;
-    for (int i = 0; i < sample_count; ++i)
-    {
-        sum += LT2991_ReadVoltage(reg);
-        vTaskDelay(pdMS_TO_TICKS(10)); // ÁÆÄÂçïÂª∂Êó∂ÔºåÈÅøÂÖçËøûÁª≠ËØªÂπ≤Êâ∞
-    }
-    return sum / sample_count;
-}
-
-// ÊâπÈáèËØªÂèñ‰Ω†ÂÖ≥ÂøÉÁöÑÁîµÂéãÈÄöÈÅì
-void LT2991_ReadAllVoltages(float *v_arr)
-{
-    v_arr[0] = LT2991_ReadVoltage_Avg(0x0A, 10); // V1
-    v_arr[1] = LT2991_ReadVoltage_Avg(0x0C, 10); // V2
-    v_arr[2] = LT2991_ReadVoltage_Avg(0x0E, 10); // V3
-    v_arr[3] = LT2991_ReadVoltage_Avg(0x10, 10); // V4
-    v_arr[4] = LT2991_ReadVoltage_Avg(0x12, 10); // V5
-    v_arr[5] = LT2991_ReadVoltage_Avg(0x14, 10); // V7
-    v_arr[6] = LT2991_ReadVoltage_Avg(0x16, 10); // V8
-}
-
-// void LT2991_ReadAllVoltages(float *v_arr) 
-// {
-//     v_arr[0] = LT2991_ReadVoltage(0x0A, 0x0B);
-//     v_arr[1] = LT2991_ReadVoltage(0x0C, 0x0D);
-//     v_arr[2] = LT2991_ReadVoltage(0x0E, 0x0F);
-//     v_arr[3] = LT2991_ReadVoltage(0x10, 0x11);
-//     v_arr[4] = LT2991_ReadVoltage(0x12, 0x13);
-//     v_arr[5] = LT2991_ReadVoltage(0x16, 0x17);
-//     v_arr[6] = LT2991_ReadVoltage(0x18, 0x19);
-
-//     float I = (V1 - V2) / 0.01f;  // ÂÅáËÆæÁîµÊµÅÈááÊ†∑ÁîµÈòª‰∏∫ 0.01Œ©
-
-//     printf("V1: %.3f V\tV2: %.3f V\tI: %.3f A\r\n", V1, V2, I);
-//     printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", V3, V4, V5);
-//     printf("V7: %.3f V\tV8: %.3f V\r\n", V7, V8);
-// }
-
-
-// ËÆ°ÁÆóÁîµÊµÅÔºàÂü∫‰∫é V1-V2 Â∑ÆÂàÜÔºå0.01Œ© ÁîµÈòªÔºâ
+// º∆À„µÁ¡˜£®ª˘”⁄ V1-V2 ≤Ó∑÷£¨0.01¶∏ µÁ◊Ë£©
 float LT2991_CalcCurrent_V1V2(void)
 {
     float v1 = LT2991_ReadVoltage(0x0A);
     float v2 = LT2991_ReadVoltage(0x0C);
-    return (v1 - v2) / 0.01f; // ÁîµÊµÅÂçï‰Ωç A
+    return (v1 - v2) / 0.01f; // µÁ¡˜µ•Œª A
 }
 
 
 void LT2991_Init(void)
 {
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;  // ÂºÄÊºèËæìÂá∫
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
-    Soft_I2C_Init();
+    Soft_I2C_Init(); // ≥ı ºªØ I2C
     printf("LT2991_Init\r\n");
-    LT2991_WriteReg(0x01, 0xFB); // ÂêØÁî®ÊâÄÊúâÈÄöÈÅì
-    LT2991_WriteReg(0x06, 0x09); // V1~V4ÔºöÂçïÁ´ØÁîµÂéãÊ®°Âºè
-    LT2991_WriteReg(0x07, 0xA0); // V5~V8ÔºöÂçïÁ´ØÁîµÂéãÊ®°Âºè
-    LT2991_WriteReg(0x08, 0x38); // ÂêØÂä®ÈáçÂ§çÈááÈõÜÔºàbit4=1Ôºâ
-    LT2991_WriteReg(0x09, 0x10); // ÂêØÂä®ÈáçÂ§çÈááÈõÜÔºàbit4=1Ôºâ
-    delay_us(1000); // Á≠âÂæÖÁ®≥ÂÆö
+    I2C_WriteByte(0x01, 0xFB, LT2991_ADDR); // ∆Ù”√À˘”–Õ®µ¿
+    I2C_WriteByte(0x06, 0x09, LT2991_ADDR); // V1~V4£∫µ•∂ÀµÁ—πƒ£ Ω
+    I2C_WriteByte(0x07, 0xA0, LT2991_ADDR); // V5~V8£∫µ•∂ÀµÁ—πƒ£ Ω
+    I2C_WriteByte(0x08, 0x38, LT2991_ADDR); // ∆Ù∂Ø÷ÿ∏¥≤…ºØ£®bit4=1£©
+    I2C_WriteByte(0x09, 0x10, LT2991_ADDR); // ∆Ù∂Ø÷ÿ∏¥≤…ºØ£®bit4=1£©
+    delay_us(1000); // µ»¥˝Œ»∂®
+
+    uint8_t reg  = I2C_ReadByte(0x01, LT2991_ADDR, 1); // ∂¡»°≈‰÷√ºƒ¥Ê∆˜£¨»∑»œ≈‰÷√≥…π¶
+    printf("reg01: %02X\r\n", reg);
+    reg = I2C_ReadByte(0x06, LT2991_ADDR, 1); // ∂¡»°≈‰÷√ºƒ¥Ê∆˜£¨»∑»œ≈‰÷√≥…π¶
+    printf("reg06: %02X\r\n", reg);
+    reg = I2C_ReadByte(0x07, LT2991_ADDR, 1);
+    printf("reg07: %02X\r\n", reg);
+
 }
 
 float LT2991_ReadCurrent_V1V2(void)
 {
-    float v1 = LT2991_ReadVoltage(0x0A); // V1
-    float v2 = LT2991_ReadVoltage(0x0C); // V2
-    printf("V1: %.3f V\tV2: %.3f V\r\n", v1, v2);
-    if (v1 > v2)
-    {
-        return (v1 - v2) / 0.01f;  // ÁîµÊµÅÂçï‰Ωç AÔºåÂÅáËÆæÈááÊ†∑ÁîµÈòª‰∏∫ 0.01Œ©
-    }
-    else if (v1 < v2)
-    {
-        return (v2 - v1) / 0.01f;  // ÁîµÊµÅÂçï‰Ωç AÔºåÂÅáËÆæÈááÊ†∑ÁîµÈòª‰∏∫ 0.01Œ©
-    }
+	uint8_t sign = 0;
+	uint8_t data[1]={0};
+	uint8_t data1[1]={0};
+	uint16_t tem=0;
+	float vol_d=0.0;
+	uint8_t data2[1]={0};
 
-    LT2991_WriteReg(0x06, 0x01); // V1~V2ÔºöÂ∑ÆÂàÜÁîµÂéãÊ®°Âºè
-    delay_us(3000); // Á≠âÂæÖÁ®≥ÂÆö
+    data[0] = I2C_ReadByte(0x0C, LT2991_ADDR, 1); // ∂¡»° V1 ºƒ¥Ê∆˜
+    data1[0] = I2C_ReadByte(0x0D, LT2991_ADDR, 1); // ∂¡»° V2 ºƒ¥Ê∆˜
 
-
-	// uint8_t sign = 0;
-	// uint8_t data[1]={0};
-	// uint8_t data1[1]={0};
-	// uint16_t tem=0;
-	// float vol_d=0.0;
-	// uint8_t data2[1]={0};
-
-    // data[0] = I2C_ReadReg(0x0C);
-    // data1[0] = I2C_ReadReg(0x0D);
-    // printf("data[0]: %02X data1[0]: %02X\r\n", data[0], data1[0]);
-    // data2[0]=I2C_ReadReg(0x01);
-    // printf("data2[0]: %02X\r\n", data2[0]);
-	// tem=((data[0]&0xffff)<<8)|data1[0];
-	// if(tem & 0x4000)
-	// {
-	// 	tem=tem^0x3fff+1;
-	// 	sign = 1;
-	// }
-	// else
-	// {
-	// }
-	// tem=tem&0x3fff;
-	// vol_d=((float)tem * 19.075)/1000;
-	// if(sign==1)
-	// {
-	// 	vol_d=(float)(0.0)-vol_d;
-	// }
-	// printf("Current: %.3f mV\r\n",vol_d);
+    printf("0C: %02X\t 0D: %02X\r\n", data[0], data1[0]);
+	tem=((data[0]&0xffff)<<8)|data1[0];
+	if(tem & 0x4000)
+	{
+		tem=tem^0x3fff+1;
+		sign = 1;
+	}
+	else
+	{
+	}
+	tem=tem&0x3fff;
+	vol_d=((float)tem * 19.075)/1000;
+	if(sign==1)
+	{
+		vol_d=(float)(0.0)-vol_d;
+	}
+	printf("Current: %.3f mV\r\n",vol_d);
 
 
     
@@ -233,26 +86,33 @@ float LT2991_ReadCurrent_V1V2(void)
 void LT2991_Read_V3V4V5(float *v3, float *v4, float *v5)
 {
     *v3 = LT2991_ReadVoltage(0x0E) * 2;  // V3
-    delay_us(1000); // Âª∂Êó∂ÔºåÈÅøÂÖçËøûÁª≠ËØªÂπ≤Êâ∞
+    delay_us(1000); // —” ±£¨±‹√‚¡¨–¯∂¡∏…»≈
     *v4 = LT2991_ReadVoltage(0x10) * 4 / 3;  // V4
-    delay_us(1000); // Âª∂Êó∂ÔºåÈÅøÂÖçËøûÁª≠ËØªÂπ≤Êâ∞
+    delay_us(1000); // —” ±£¨±‹√‚¡¨–¯∂¡∏…»≈
     *v5 = LT2991_ReadVoltage(0x12);  // V5
 }
 
 float LT2991_ReadTemperature(uint8_t reg)
 {
-    uint16_t raw = I2C_ReadReg(reg);
-    // printf("reg: %02X \t raw: %04X\r\n", reg, raw);
-    // printf("raw: %d\r\n", raw);
-    // return (raw * 0.0625f);  // ÊåâÁÖß LT2991 ÊâãÂÜåÊ∏©Â∫¶ËΩ¨Êç¢
-    raw  = raw&0x1fff;
-    return ((float)raw * 0.0625f);  // ÊåâÁÖß LT2991 ÊâãÂÜåÊ∏©Â∫¶ËΩ¨Êç¢
+    float temperature = 0.0;
+    uint16_t tem, tem1 = 0;
+    uint8_t temdata = 0;
+    uint8_t temdata1 = 0;
+
+    temdata = I2C_ReadByte(reg, XZC2991Adr, 1);
+    temdata1 = I2C_ReadByte(reg + 1, XZC2991Adr, 1);
+
+    tem = ((temdata & 0x00ff) << 8) | temdata1;
+    tem1 = tem & 0x1fff;
+
+    temperature = (float)(tem1)*T_LSB;
+    return temperature; // µ•Œª °„C
 }
 
 void LT2991_Read_Temperatures(float *temp7, float *temp8)
 {
-    *temp7 = LT2991_ReadTemperature(0x16);  // ÈÄöÈÅì7
-    *temp8 = LT2991_ReadTemperature(0x18);  // ÈÄöÈÅì8
+    *temp7 = LT2991_ReadTemperature(0x16);  // Õ®µ¿7
+    *temp8 = LT2991_ReadTemperature(0x18);  // Õ®µ¿8
 }
 
 
@@ -261,27 +121,15 @@ void LT2991_ReadAll()
     float v3, v4, v5;
     float temp7, temp8;
     float current = LT2991_ReadCurrent_V1V2();
-    delay_us(2000); // Âª∂Êó∂ÔºåÈÅøÂÖçËøûÁª≠ËØªÂπ≤Êâ∞
+    vTaskDelay(100);
     LT2991_Read_V3V4V5(&v3, &v4, &v5);
+    vTaskDelay(100);
     LT2991_Read_Temperatures(&temp7, &temp8);
-
-
-//     ZGW2991_ReadVoltage(0x0A, 0x0B);
-//     ZGW2991_ReadVoltage(0x0C, 0x0D);
-// float tmp;
-//     tmp = ZGW2991_ReadVoltage(0x0E, 0x0F);
-//     printf("V3: %.3f V\r\n", tmp);
-//     tmp = ZGW2991_ReadVoltage(0x10, 0x11);
-//     printf("V4: %.3f V\r\n", tmp);
-//     tmp = ZGW2991_ReadVoltage(0x12, 0x13);
-//     printf("V5: %.3f V\r\n", tmp);
-//     ZGW2991_ReadVoltage(0x16, 0x17);
-
 
 
     // printf("%x\r\n", LT2991_ReadVoltage(0x0C));
     // printf("V1-V2 Current: %.3f A\r\n", current);
     printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", v3, v4, v5);
-    printf("Temp7: %.2f \tTemp8: %.2f \r\n", temp7, temp8);
+    printf("Temp7: %.2f °Ê\tTemp8: %.2f \r\n", temp7, temp8);
 }
 
