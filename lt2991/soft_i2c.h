@@ -26,10 +26,8 @@ void delay_us(uint32_t us);
 void Soft_I2C_Init(void);
 void I2C_Start(void);
 void I2C_Stop(void);
-void I2C_SendACK(uint8_t ack);
 uint8_t I2C_WaitACK(void);
 void I2C_SendByte(uint8_t byte);
-uint8_t IIC_ReadByte(void);
 
 void I2C_WriteByte(uint8_t addr,uint8_t data,uint8_t device_addr);
 uint16_t I2C_ReadByte(uint8_t addr,uint8_t device_addr,uint8_t ByteNumToRead);

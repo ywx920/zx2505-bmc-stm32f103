@@ -20,14 +20,6 @@ float LT2991_ReadVoltage(uint8_t reg)
     return voltage/1000; // 单位 V
 }
 
-// 计算电流（基于 V1-V2 差分，0.01Ω 电阻）
-float LT2991_CalcCurrent_V1V2(void)
-{
-    float v1 = LT2991_ReadVoltage(0x0A);
-    float v2 = LT2991_ReadVoltage(0x0C);
-    return (v1 - v2) / 0.01f; // 电流单位 A
-}
-
 
 void LT2991_Init(void)
 {
@@ -73,6 +65,7 @@ float LT2991_ReadCurrent_V1V2(void)
 	}
 	tem=tem&0x3fff;
 	vol_d=((float)tem * 19.075)/1000;
+	// vol_d=((float)tem * 11.39)/1000;
 	if(sign==1)
 	{
 		vol_d=(float)(0.0)-vol_d;

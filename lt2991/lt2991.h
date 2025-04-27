@@ -48,16 +48,10 @@ typedef enum
 }Ltc2991_Reg;
 
 
-void LT2991_WriteReg(uint8_t reg, uint8_t val);
-
 
 void LT2991_Init(void);
 
-float LT2991_CalcCurrent_V1V2(void);  // 差分测量 V1~V2，结合0.01Ω采样电阻
-
 #define LT2991_CHANNEL_COUNT 8
-
-extern float lt2991_voltage_cache[LT2991_CHANNEL_COUNT];  // 缓存所有通道电压
 
 void LT2991_ReadAll();
 
