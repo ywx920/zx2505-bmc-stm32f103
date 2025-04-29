@@ -1,0 +1,89 @@
+T1420 000:182.826   SEGGER J-Link V6.94b Log File
+T1420 000:182.998   DLL Compiled: Jan 26 2021 18:02:18
+T1420 000:183.006   Logging started @ 2025-04-24 02:22
+T1420 000:183.015 - 183.019ms
+T1420 000:183.028 JLINK_SetWarnOutHandler(...)
+T1420 000:183.038 - 0.013ms
+T1420 000:183.048 JLINK_OpenEx(...)
+T1420 000:184.872   Firmware: J-Link V9 compiled May  7 2021 16:26:12
+T1420 000:185.137   Decompressing FW timestamp took 225 us
+T1420 000:193.442   Hardware: V9.70
+T1420 000:193.471   S/N: 59701286
+T1420 000:193.486   OEM: SEGGER
+T1420 000:193.536   Feature(s): RDI, GDB, FlashDL, FlashBP, JFlash
+T1420 000:195.791   TELNET listener socket opened on port 19021
+T1420 000:195.859   WEBSRV Starting webserver
+T1420 000:195.955   WEBSRV Webserver running on local port 19080
+T1420 000:195.961 - 12.915ms returns "O.K."
+T1420 000:195.976 JLINK_SetErrorOutHandler(...)
+T1420 000:195.979 - 0.005ms
+T1420 000:195.990 JLINK_ExecCommand("ProjectFile = "E:\2505-1\310b\STM32F103_Freertos_LED_V1.0\USER\JLinkSettings.ini"", ...). 
+T1420 000:205.062   Ref file found at: C:\Keil_v5\ARM\Segger\JLinkDevices.ref
+T1420 000:205.167   XML referenced by ref file: C:\Program Files (x86)\SEGGER\JLink\JLinkDevices.xml
+T1420 000:205.638   C:\Program Files (x86)\SEGGER\JLink\JLinkDevices.xml evaluated successfully.
+T1420 000:218.539 - 22.563ms returns 0x00
+T1420 000:218.576 JLINK_ExecCommand("Device = STM32F103RB", ...). 
+T1420 000:218.821   Device "STM32F103RB" selected.
+T1420 000:219.123 - 0.545ms returns 0x00
+T1420 000:219.136 JLINK_GetHardwareVersion()
+T1420 000:219.139 - 0.005ms returns 97000
+T1420 000:219.150 JLINK_GetDLLVersion()
+T1420 000:219.155 - 0.006ms returns 69402
+T1420 000:219.159 JLINK_GetOEMString(...)
+T1420 000:219.164 JLINK_GetFirmwareString(...)
+T1420 000:219.167 - 0.005ms
+T1420 000:219.173 JLINK_GetDLLVersion()
+T1420 000:219.176 - 0.004ms returns 69402
+T1420 000:219.179 JLINK_GetCompileDateTime()
+T1420 000:219.182 - 0.004ms
+T1420 000:219.188 JLINK_GetFirmwareString(...)
+T1420 000:219.191 - 0.004ms
+T1420 000:219.195 JLINK_GetHardwareVersion()
+T1420 000:219.198 - 0.004ms returns 97000
+T1420 000:219.202 JLINK_GetSN()
+T1420 000:219.205 - 0.004ms returns 59701286
+T1420 000:219.209 JLINK_GetOEMString(...)
+T1420 000:219.216 JLINK_TIF_Select(JLINKARM_TIF_SWD)
+T1420 000:220.648 - 1.434ms returns 0x00
+T1420 000:220.654 JLINK_HasError()
+T1420 000:220.662 JLINK_SetSpeed(5000)
+T1420 000:220.939 - 0.279ms
+T1420 000:221.238 JLINK_HasError()
+T1420 000:221.244 JLINK_SetResetType(JLINKARM_RESET_TYPE_NORMAL)
+T1420 000:221.248 - 0.005ms returns JLINKARM_RESET_TYPE_NORMAL
+T1420 000:221.252 JLINK_Reset()
+T1420 000:853.593   STM32 (connect): Can not attach to CPU. Trying connect under reset.
+T1420 001:011.256   
+  ***** Error: 
+T1420 001:011.293   STM32: Connecting to CPU via connect under reset failed.
+T1420 001:241.134   STM32 (connect): Can not attach to CPU. Trying connect under reset.
+T1420 001:398.076   
+  ***** Error: 
+T1420 001:398.119   STM32: Connecting to CPU via connect under reset failed.
+T1420 001:448.686 - 1227.455ms
+T1420 001:448.811 JLINK_GetId()
+T1420 001:556.113   STM32 (connect): Can not attach to CPU. Trying connect under reset.
+T1420 001:714.558   
+  ***** Error: 
+T1420 001:714.596   STM32: Connecting to CPU via connect under reset failed.
+T1420 001:945.550   STM32 (connect): Can not attach to CPU. Trying connect under reset.
+T1420 002:104.355   
+  ***** Error: 
+T1420 002:104.408   STM32: Connecting to CPU via connect under reset failed.
+T1420 002:155.713 - 706.940ms returns 0x00000000
+T1420 002:155.792 JLINK_GetId()
+T1420 002:262.102   STM32 (connect): Can not attach to CPU. Trying connect under reset.
+T1420 002:421.300   
+  ***** Error: 
+T1420 002:421.354   STM32: Connecting to CPU via connect under reset failed.
+T1420 002:652.823   STM32 (connect): Can not attach to CPU. Trying connect under reset.
+T1420 002:811.249   
+  ***** Error: 
+T1420 002:811.357   STM32: Connecting to CPU via connect under reset failed.
+T1420 002:862.177 - 706.432ms returns 0x00000000
+T1420 002:868.021 JLINK_GetFirmwareString(...)
+T1420 002:868.120 - 0.103ms
+T1420 007:494.613 JLINK_Close()
+T1420 007:505.886 - 11.286ms
+T1420 007:505.902   
+T1420 007:505.906   Closed
