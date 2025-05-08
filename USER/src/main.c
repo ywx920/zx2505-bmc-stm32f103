@@ -20,6 +20,10 @@
 #include "usart.h"
 #include "shell.h"
 #include "lt2991.h"
+#include "bsp_i2c_slave.h"
+#include "bsp_gpio.h"
+
+
 float voltages[7];  // V1~V5, V7, V8
 
 
@@ -47,6 +51,8 @@ void LED2_Task(void *task)
 		// delay_us(1);
 		LT2991_ReadAll();
         vTaskDelay(2000);  // 每秒更新一次
+		GPIO_Read_Keys(); // 读取按键状态
+		
     }
 
 }
@@ -71,6 +77,8 @@ int main(void)
 	userShellInit();
 	Printf_Version();	/* 运行版本信息打印 */
 	LT2991_Init();
+	GPIO_Key_Init();
+    I2C_Slave_Init(I2C1, 0xA0);
 
 	xTaskCreate(LED1_Task,		//任务函数指针
 							"LED1_Task",		//任务名称
@@ -85,12 +93,12 @@ int main(void)
 							NULL,					//任务参数为空
 							2,						//任务优先级
 							NULL);				//任务句柄为空
-	// xTaskCreate(LT2991_Task,		//任务函数指针
-	// 						"LT2991_Task",		//任务名称
-	// 						128,						//堆栈深度（字）
-	// 						NULL,					//任务参数为空
-	// 						1,						//任务优先级
-	// 						NULL);				//任务句柄为空
+	xTaskCreate(ipmb_task,		//任务函数指针
+							"ipmb_task",		//任务名称
+							128,						//堆栈深度（字）
+							NULL,					//任务参数为空
+							1,						//任务优先级
+							NULL);				//任务句柄为空
 	vTaskStartScheduler();
 	while(1)
 	{ 

@@ -14,6 +14,8 @@
         "soft_i2c.h": "c",
         "led.h": "c",
         "main.h": "c",
-        "stm32f10x_gpio.h": "c"
+        "stm32f10x_gpio.h": "c",
+        "bsp_i2c_slave.h": "c",
+        "ipmb_protocol.h": "c"
     }
 }

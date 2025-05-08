@@ -3,7 +3,7 @@
 
 #include "stm32f10x.h"
 
-void I2C_Slave_Init(void);
+void I2C_Slave_Init(I2C_TypeDef* I2Cx, uint8_t address);
 int ipmb_task(void);
 
 #endif

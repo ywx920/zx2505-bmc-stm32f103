@@ -1,10 +1,11 @@
 #include "ipmb_protocol.h"
-#include "bsp_adc.h"
 #include "bsp_gpio.h"
 
 void IPMB_Process_Command(uint8_t* rx_buf, uint8_t* tx_buf, uint8_t* tx_len) {
     uint8_t cmd = rx_buf[2]; // 假设第3字节为命令码
+    // printf("111111111\r\n");
     switch (cmd) {
+        // printf("cmd:%02X\r\n", cmd);
         case 0x10: { // 获取按键状态
             tx_buf[0] = GPIO_Read_Keys();
             *tx_len = 1;

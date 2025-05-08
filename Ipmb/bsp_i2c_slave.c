@@ -1,6 +1,9 @@
 #include "bsp_i2c_slave.h"
 #include "ipmb_protocol.h"
 #include "stm32f10x.h"
+#include "stm32f10x_i2c.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_rcc.h"
 
 #define RX_BUF_LEN 32
 #define TX_BUF_LEN 32
@@ -12,6 +15,7 @@ static uint8_t i2c2_tx_buf[TX_BUF_LEN];
 
 
 void I2C_Slave_Init(I2C_TypeDef* I2Cx, uint8_t address) {
+    printf("I2C_Slave_Init\r\n");
     I2C_InitTypeDef i2c;
     GPIO_InitTypeDef gpio;
     NVIC_InitTypeDef nvic;
@@ -36,6 +40,7 @@ void I2C_Slave_Init(I2C_TypeDef* I2Cx, uint8_t address) {
     I2C_Init(I2Cx, &i2c);
 
     I2C_ITConfig(I2Cx, I2C_IT_EVT | I2C_IT_BUF, ENABLE);
+    I2C_ITConfig(I2Cx, I2C_IT_ERR, ENABLE); 
     I2C_Cmd(I2Cx, ENABLE);
 
     if (I2Cx == I2C1) {
@@ -86,11 +91,18 @@ void I2C2_EV_IRQHandler(void) {
 
 int ipmb_task(void) {
     GPIO_Key_Init();
-    I2C_Slave_Init(I2C1, 0x20);
-    I2C_Slave_Init(I2C2, 0x22);
+    // uint8_t i2c_address = GPIO_Read_Keys(); // 读取按键状态
+    uint8_t i2c_address = 0xa0; // 读取按键状态
+    // I2C_Slave_Init(I2C1, i2c_address);
+    // I2C_Slave_Init(I2C2, i2c_address | 0x02); // I2C2 地址加1
 
     while (1) {
         // 所有处理在中断里
+        printf("I2C1 RX: ");
+        for (int i = 0; i < RX_BUF_LEN; i++) {
+            printf("%02X ", i2c1_rx_buf[i]);
+        }
+		vTaskDelay(2000);
     }
 }
 
