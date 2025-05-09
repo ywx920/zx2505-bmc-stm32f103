@@ -13,6 +13,8 @@
 #define T_LSB    (0.0625)  //温度的分辨率
 #define DIODE_LSB   (38.15)   //二极管电压采集分辨率为38.15uV 
 #define XZC2991Adr  0x98  // ADR2=1,ADR1=0,ADR0=0 
+
+#define LT2991_V1V2SWITCH  1
 typedef enum
 {
 	REG_STA_LOW = 0X00,

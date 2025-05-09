@@ -3,6 +3,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+
 // 读取指定通道电压，单位V
 float LT2991_ReadVoltage(uint8_t reg)
 {   
@@ -25,19 +26,23 @@ void LT2991_Init(void)
 {
     Soft_I2C_Init(); // 初始化 I2C
     printf("LT2991_Init\r\n");
+
+
+#if LT2991_V1V2SWITCH
+
+    I2C_WriteByte(0x01, 0xFB, LT2991_ADDR);
+    I2C_WriteByte(0x06, 0x80, LT2991_ADDR);
+    I2C_WriteByte(0x07, 0xA0, LT2991_ADDR);
+    I2C_WriteByte(0x08, 0x38, LT2991_ADDR); 
+    I2C_WriteByte(0x09, 0x10, LT2991_ADDR);
+
+#else
     I2C_WriteByte(0x01, 0xFB, LT2991_ADDR);
     I2C_WriteByte(0x06, 0x89, LT2991_ADDR);
     I2C_WriteByte(0x07, 0xA0, LT2991_ADDR);
     I2C_WriteByte(0x08, 0x38, LT2991_ADDR); 
     I2C_WriteByte(0x09, 0x10, LT2991_ADDR); 
-
-
-    // I2C_WriteByte(0x01, 0xFB, LT2991_ADDR);
-    // I2C_WriteByte(0x06, 0x80, LT2991_ADDR);
-    // I2C_WriteByte(0x07, 0xA0, LT2991_ADDR);
-    // I2C_WriteByte(0x08, 0x38, LT2991_ADDR); 
-    // I2C_WriteByte(0x09, 0x10, LT2991_ADDR); 
-
+#endif
     delay_us(1000); // 等待稳定
 
     uint8_t reg  = I2C_ReadByte(0x01, LT2991_ADDR, 1); // 读取配置寄存器，确认配置成功
@@ -48,17 +53,30 @@ void LT2991_Init(void)
     printf("reg07: %02X\r\n", reg);
 
 }
-
+static float lastcurrent = 0.0;
 float LT2991_ReadCurrent_V1V2(void)
 {
-    // float v1, v2;
+#if LT2991_V1V2SWITCH
 
-    // v1 = LT2991_ReadVoltage(0x0A) * 4.1;
-    // v2 = LT2991_ReadVoltage(0x0C) * 4.1;
+    float v1, v2;
+    float current;
+    v1 = LT2991_ReadVoltage(0x0A) * 4;
+    v2 = LT2991_ReadVoltage(0x0C) * 4;
 
-    // printf("V1: %.3f V\tV2: %.3f V\r\n", v1, v2);
+    current = (v1 - v2) / 0.026; // 计算电流，单位 A
+    if (current < 0.0)
+    {
+        current = -current;
+    } else if (current > 3.0 && current < 0.01)
+    {
+        current = lastcurrent;
+    }
+    
+    lastcurrent = current;
+    printf("V1: %.3f V  V2: %.3f V\r\n", v1, v2);
+    printf("Current: %.3f A\r\n", current);
 
-
+#else
 
 	uint8_t sign = 0;
 	uint8_t data[1]={0};
@@ -89,7 +107,7 @@ float LT2991_ReadCurrent_V1V2(void)
 	}
 	printf("Current: %.3f mV\r\n",vol_d);
 
-
+#endif
     
 }
 

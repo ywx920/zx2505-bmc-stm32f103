@@ -8,10 +8,10 @@
 #define RX_BUF_LEN 32
 #define TX_BUF_LEN 32
 
-static uint8_t i2c1_rx_buf[RX_BUF_LEN];
-static uint8_t i2c1_tx_buf[TX_BUF_LEN];
-static uint8_t i2c2_rx_buf[RX_BUF_LEN];
-static uint8_t i2c2_tx_buf[TX_BUF_LEN];
+static uint8_t i2c1_rx_buf[RX_BUF_LEN] = {0};
+static uint8_t i2c1_tx_buf[TX_BUF_LEN] = {0};
+static uint8_t i2c2_rx_buf[RX_BUF_LEN] = {0};
+static uint8_t i2c2_tx_buf[TX_BUF_LEN] = {0};
 
 
 void I2C_Slave_Init(I2C_TypeDef* I2Cx, uint8_t address) {
@@ -55,22 +55,174 @@ void I2C_Slave_Init(I2C_TypeDef* I2Cx, uint8_t address) {
 }
 
 
-void I2C1_EV_IRQHandler(void) {
-    static uint8_t idx = 0;
-    if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED)) {
-        idx = 0;
-    } else if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_BYTE_RECEIVED)) {
-        i2c1_rx_buf[idx++] = I2C_ReceiveData(I2C1);
-    } else if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_STOP_DETECTED)) {
-        uint8_t len = 0;
-        IPMB_Process_Command(i2c1_rx_buf, i2c1_tx_buf, &len);
-        idx = 0;
-        I2C_ClearFlag(I2C1, I2C_FLAG_STOPF);
-    } else if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED) ||
-               I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_BYTE_TRANSMITTING)) {
-        I2C_SendData(I2C1, i2c1_tx_buf[idx++]);
-    }
+// void I2C1_EV_IRQHandler(void) {
+//     static uint8_t idx = 0;
+//     if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED)) {
+//         idx = 0;
+//     } else if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_BYTE_RECEIVED)) {
+//         i2c1_rx_buf[idx++] = I2C_ReceiveData(I2C1);
+//     } else if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_STOP_DETECTED)) {
+//         uint8_t len = 0;
+//         IPMB_Process_Command(i2c1_rx_buf, i2c1_tx_buf, &len);
+//         idx = 0;
+//         I2C_ClearFlag(I2C1, I2C_FLAG_STOPF);
+//     } else if (I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED) ||
+//                I2C_CheckEvent(I2C1, I2C_EVENT_SLAVE_BYTE_TRANSMITTING)) {
+//         I2C_SendData(I2C1, i2c1_tx_buf[idx++]);
+//     }
+// }
+
+
+//Clear ADDR by reading SR1, then SR2
+void I2C_clear_ADDR(I2C_TypeDef* I2Cx) {
+	I2C_GetFlagStatus(I2Cx, I2C_FLAG_ADDR);
+	((void)(I2Cx->SR2));
 }
+
+//Clear STOPF by reading SR1, then writing CR1
+void I2C_clear_STOPF(I2C_TypeDef* I2Cx) {
+	I2C_GetFlagStatus(I2Cx, I2C_FLAG_STOPF);
+	I2C_Cmd(I2Cx, ENABLE);
+}
+static uint8_t data = 0x11;
+void I2C1_EV_IRQHandler(void) {
+        uint8_t idx = 0;
+		//Clear AF from slave-transmission end
+		if(I2C_GetITStatus(I2C1, I2C_IT_AF)) {
+			I2C_ClearITPendingBit(I2C1, I2C_IT_AF);
+		}
+		//Big state machine response, since doesn't actually keep state
+		switch(I2C_GetLastEvent(I2C1)) {
+			//SLAVE
+			//Receive
+			case I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED: //EV1
+				I2C_clear_ADDR(I2C1);
+                idx = 0;
+				break;
+			case I2C_EVENT_SLAVE_BYTE_RECEIVED: //EV2
+				//Read it, so no one is waiting, clears BTF if necessary
+				i2c1_rx_buf[idx++] = I2C_ReceiveData(I2C1);
+
+                uint8_t len = 0;
+                IPMB_Process_Command(i2c1_rx_buf, i2c1_tx_buf, &len);
+                // data = I2C_ReceiveData(I2C1);
+				// LED1= !(data & 0x01);
+				// LED2= !(data & 0x02);
+				// LED3= !(data & 0x04);
+				// LED4= !(data & 0x08);
+				//Do something with it
+				if(I2C_GetFlagStatus(I2C1, I2C_FLAG_DUALF)) {//Secondary Receive
+				} else if(I2C_GetFlagStatus(I2C1, I2C_FLAG_GENCALL)) {//General Receive
+				} else {//Normal
+				}
+				break;
+			case I2C_EVENT_SLAVE_STOP_DETECTED: //End of receive, EV4
+
+				I2C_clear_STOPF(I2C1);
+				break;
+
+			//Transmit
+			case I2C_EVENT_SLAVE_TRANSMITTER_ADDRESS_MATCHED: //EV1
+				I2C_clear_ADDR(I2C1);
+				//Send first byte
+				// I2C_SendData(I2C1, i2c1_tx_buf[0]);
+				I2C_SendData(I2C1, data);
+				// printf("%d\r\n", data);
+				break;
+			case I2C_EVENT_SLAVE_BYTE_TRANSMITTED: //EV3
+				//Determine what you want to send
+				//data = 5;
+				if(I2C_GetFlagStatus(I2C1, I2C_FLAG_DUALF)) {//Secondary Transmit
+				} else if(I2C_GetFlagStatus(I2C1, I2C_FLAG_GENCALL)) {//General Transmit
+				} else {//Normal
+				}
+				//Read flag and write next byte to clear BTF if present
+				I2C_GetFlagStatus(I2C1, I2C_FLAG_BTF);
+				// I2C_SendData(I2C1, i2c1_tx_buf[0]);
+				I2C_SendData(I2C1, data);
+				// printf("%d\r\n", data);
+
+				break;
+			case I2C_EVENT_SLAVE_ACK_FAILURE://End of transmission EV3_2
+				//TODO: Doesn't seem to be getting reached, so just
+				//check at top-level
+				I2C_ClearITPendingBit(I2C1, I2C_IT_AF);
+				break;
+			//Alternative Cases for address match
+			case I2C_EVENT_SLAVE_RECEIVER_SECONDADDRESS_MATCHED: //EV1
+				break;
+			case I2C_EVENT_SLAVE_TRANSMITTER_SECONDADDRESS_MATCHED: //EV1
+				break;
+			case I2C_EVENT_SLAVE_GENERALCALLADDRESS_MATCHED: //EV1
+				break;
+
+
+			//MASTER
+			case I2C_EVENT_MASTER_MODE_SELECT: //EV5, just sent start bit
+				break;
+			//Receive
+			case I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED: //EV6, just sent addr    
+				break;
+			case I2C_EVENT_MASTER_BYTE_RECEIVED: //EV7
+				break;
+			//Transmit
+			case I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED: //EV6, just sent addr     
+				break;
+			case I2C_EVENT_MASTER_BYTE_TRANSMITTING: //EV8, about to send data
+				break;
+			case I2C_EVENT_MASTER_BYTE_TRANSMITTED: //EV8_2, just sent data
+				break;
+
+			//Alternative addressing stuff, not going to worry about
+			case I2C_EVENT_MASTER_MODE_ADDRESS10: //EV9
+				break;
+			default:
+				//How the FUCK did you get here?
+				//I should probably raise some error, but fuck it,
+				//it's late
+				break;
+		}
+}
+
+void I2C1_ER_IRQHandler(void) {
+ //       GPIO_SetBits(GPIOD, RED);
+//	LED3=0;
+		//Can't use nice switch statement, because no fxn available
+		if(I2C_GetITStatus(I2C1,        I2C_IT_SMBALERT)) {
+		} else if(I2C_GetITStatus(I2C1, I2C_IT_TIMEOUT)) {
+		} else if(I2C_GetITStatus(I2C1, I2C_IT_PECERR)) {
+		} else if(I2C_GetITStatus(I2C1, I2C_IT_OVR)) {
+			//Overrun
+			//CLK stretch disabled and receiving
+			//DR has not been read, b4 next byte comes in
+			//effect: lose byte
+			//should:clear RxNE and transmitter should retransmit
+
+			//Underrun
+			//CLK stretch disabled and I2C transmitting
+			//haven't updated DR since new clock
+			//effect: same byte resent
+			//should: make sure discarded, and write next
+		} else if(I2C_GetITStatus(I2C1, I2C_IT_AF)) {
+			//Detected NACK
+			//Transmitter must reset com
+				//Slave: lines released
+				//Master: Stop or repeated Start must must be generated
+				//Master = MSL bit
+			//Fixup
+			I2C_ClearITPendingBit(I2C1, I2C_IT_AF);
+		} else if(I2C_GetITStatus(I2C1, I2C_IT_ARLO)) {
+			//Arbitration Lost
+			//Goes to slave mode, but can't ack slave address in same transfer
+			//Can after repeat Start though
+		} else if(I2C_GetITStatus(I2C1, I2C_IT_BERR)) {
+			//Bus Error
+			//In slave mode: data discarded, lines released, acts like restart
+			//In master mode: current transmission continues
+		}
+}
+
+
 
 void I2C2_EV_IRQHandler(void) {
     static uint8_t idx = 0;
@@ -102,6 +254,15 @@ int ipmb_task(void) {
         for (int i = 0; i < RX_BUF_LEN; i++) {
             printf("%02X ", i2c1_rx_buf[i]);
         }
+        printf("\r\nI2C1 TX: ");
+        for (int a = 0; a < 10; a++)
+        {
+            printf("%02X ", i2c1_tx_buf[a]);
+        }
+        // I2C_SendData(I2C1, 0x55);
+		data++;
+		printf("data:%02X\r\n", data);
+
 		vTaskDelay(2000);
     }
 }

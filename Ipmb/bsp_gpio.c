@@ -38,7 +38,7 @@ uint8_t GPIO_Read_Keys(void) {
     uint8_t gap = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6);  // GAP
 
     if (gap == 0) {
-        printf("GAP is GND, IPMB addressing disabled.\r\n");
+        // printf("GAP is GND, IPMB addressing disabled.\r\n");
         return 0;
     }
 
@@ -52,9 +52,9 @@ uint8_t GPIO_Read_Keys(void) {
     uint8_t hardware_address = 0x40 | ga_value;
     uint8_t ipmb_address = hardware_address << 1;
 
-    printf("GA value: 0x%02X\r\n", ga_value);
-    printf("Hardware Address: 0x%02X\r\n", hardware_address);
-    printf("IPMB Address: 0x%02X\r\n", ipmb_address);
+    // printf("GA value: 0x%02X\r\n", ga_value);
+    // printf("Hardware Address: 0x%02X\r\n", hardware_address);
+    // printf("IPMB Address: 0x%02X\r\n", ipmb_address);
 
     return ipmb_address;
 

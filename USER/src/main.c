@@ -51,7 +51,7 @@ void LED2_Task(void *task)
 		// delay_us(1);
 		LT2991_ReadAll();
         vTaskDelay(2000);  // 每秒更新一次
-		GPIO_Read_Keys(); // 读取按键状态
+		// GPIO_Read_Keys(); // 读取按键状态
 		
     }
 
