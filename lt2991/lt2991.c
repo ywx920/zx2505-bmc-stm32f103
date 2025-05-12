@@ -2,6 +2,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include <stdio.h>
 
 
 // 读取指定通道电压，单位V
@@ -31,7 +32,7 @@ void LT2991_Init(void)
 #if LT2991_V1V2SWITCH
 
     I2C_WriteByte(0x01, 0xFB, LT2991_ADDR);
-    I2C_WriteByte(0x06, 0x80, LT2991_ADDR);
+    I2C_WriteByte(0x06, 0x88, LT2991_ADDR);
     I2C_WriteByte(0x07, 0xA0, LT2991_ADDR);
     I2C_WriteByte(0x08, 0x38, LT2991_ADDR); 
     I2C_WriteByte(0x09, 0x10, LT2991_ADDR);
@@ -63,7 +64,7 @@ float LT2991_ReadCurrent_V1V2(void)
     v1 = LT2991_ReadVoltage(0x0A) * 4;
     v2 = LT2991_ReadVoltage(0x0C) * 4;
 
-    current = (v1 - v2) / 0.026; // 计算电流，单位 A
+    current = (v1 - v2) / 0.0245; // 计算电流，单位 A
     if (current < 0.0)
     {
         current = -current;
@@ -108,7 +109,8 @@ float LT2991_ReadCurrent_V1V2(void)
 	printf("Current: %.3f mV\r\n",vol_d);
 
 #endif
-    
+// 返回值测试添加
+return 1;    
 }
 
 void LT2991_Read_V3V4V5(float *v3, float *v4, float *v5)
@@ -158,6 +160,7 @@ void LT2991_ReadAll()
     // printf("%x\r\n", LT2991_ReadVoltage(0x0C));
     // printf("V1-V2 Current: %.3f A\r\n", current);
     printf("V3: %.3f V\tV4: %.3f V\tV5: %.3f V\r\n", v3, v4, v5);
-    printf("Temp7: %.2f ℃\tTemp8: %.2f \r\n", temp7, temp8);
+    // printf("Temp7: %.2f ℃\tTemp8: %.2f \r\n", temp7, temp8);
+    printf("Temp7: %.2f ℃\t\r\n", temp7);
 }
 

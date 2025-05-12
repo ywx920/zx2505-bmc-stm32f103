@@ -21,7 +21,8 @@
 #define IIC_SDA_0()    GPIO_ResetBits(I2C_SDA_GPIO, I2C_SDA_PIN)
 #define READ_SDA   	   GPIO_ReadInputDataBit(I2C_SDA_GPIO, I2C_SDA_PIN)
 
-
+static void SDA_OUT(void);
+static void SDA_IN(void);
 void delay_us(uint32_t us);
 void Soft_I2C_Init(void);
 void I2C_Start(void);

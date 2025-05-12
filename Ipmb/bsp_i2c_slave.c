@@ -4,6 +4,7 @@
 #include "stm32f10x_i2c.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_rcc.h"
+#include <stdio.h>
 
 #define RX_BUF_LEN 32
 #define TX_BUF_LEN 32

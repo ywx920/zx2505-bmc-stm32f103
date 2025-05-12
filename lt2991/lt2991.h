@@ -56,6 +56,7 @@ void LT2991_Init(void);
 #define LT2991_CHANNEL_COUNT 8
 
 void LT2991_ReadAll();
-
+float LT2991_ReadVoltage(uint8_t reg);
+float LT2991_ReadTemperature(uint8_t reg);
 
 #endif

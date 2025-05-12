@@ -16,6 +16,8 @@
         "main.h": "c",
         "stm32f10x_gpio.h": "c",
         "bsp_i2c_slave.h": "c",
-        "ipmb_protocol.h": "c"
+        "ipmb_protocol.h": "c",
+        "bsp_gpio.h": "c",
+        "shell_ext.h": "c"
     }
 }
